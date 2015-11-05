@@ -1,11 +1,12 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   respond_to :html
 
   def index
-    @tasks = Task.all
-    respond_with(@tasks)
+  @tasks = current_user.tasks
+  respond_with(@tasks)
   end
 
   def show
@@ -21,7 +22,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.new(task_params)
     @task.save
     respond_with(@task)
   end
